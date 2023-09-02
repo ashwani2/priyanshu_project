@@ -135,6 +135,57 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   sendTokenResponse(user, 200, res);
 });
 
+//@desc     Create Profile
+//@route    POST/api/v1/auth/photoUpload
+//@access   Public
+exports.photoUpload= asyncHandler(async(req,res,next)=>{
+  const user = await User.findById(req.params.id);
+
+  if (!user) {
+    return next(
+      new ErrorResponse(`USER not found with id of ${req.params.id}`, 404)
+    );
+  }
+  
+  if (!req.files) {
+    return next(new ErrorResponse(`Please Upload A file`, 400));
+  }
+
+  const file = req.files.file;
+
+  // Make Sure the Image is Photo
+  if (!file.mimetype.startsWith("image")) {
+    return next(new ErrorResponse(`Please Upload a image file`, 400));
+  }
+
+  // check filesize
+  if (file.size > process.env.MAX_FILE_UPLOAD) {
+    return next(
+      new ErrorResponse(
+        `Please Upload a Image less than ${process.env.MAX_FILE_UPLOADS}`,
+        400
+      )
+    );
+  }
+
+  // create custom filename
+  file.name = `photo_${user._id}${path.parse(file.name).ext}`;
+
+  file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+    if (err) {
+      console.log(err);
+      return next(new ErrorResponse(`Problem With file upload`, 500));
+    }
+
+    await user.findByIdAndUpdate(req.params.id, { photo: file.name });
+
+    res.status(200).json({
+      sucess: true,
+      data: file.name,
+    });
+  });
+})
+
 // Get Token from model,create cookie and send response
 const sendTokenResponse = (user, statusCode, res) => {
   //Create token

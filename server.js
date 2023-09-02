@@ -22,6 +22,7 @@ dotenv.config({
 });
 //connect to database
 connectDB();
+
 //Route files
 const auth = require("./routes/auth");
 

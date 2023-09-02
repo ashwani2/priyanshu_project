@@ -16,11 +16,6 @@ const UserSchema = new mongoose.Schema({
       "Please add a valid email",
     ],
   },
-  role: {
-    type: String,
-    enum: ["user", "publisher"],
-    default: "user",
-  },
   password: {
     type: String,
     required: [true, "Please Add a Password"],
@@ -36,6 +31,16 @@ const UserSchema = new mongoose.Schema({
     default:null,
   },
   country:String,
+  expertise:Number,
+  isActive:{
+    type:Boolean,
+    default:false
+  },
+  subscription:{
+    type:Boolean,
+    deafult:false
+  },
+  photo:String,
   resetPasswordToken: String,
   resetPasswordExpire: Date,
   created_at: {
