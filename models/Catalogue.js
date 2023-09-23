@@ -11,7 +11,21 @@ const CatalogueSchema = new mongoose.Schema({
   },
   expert:String,
   source:String,
-  thumbnail:String
+  thumbnail:String,
+  viewCount:{
+    type:Number,
+    default:0
+  },
+  commentCount:{
+    type:Number,
+    default:0
+  },
+  likeCount:{
+    type:Number,
+    default:0
+  },
+},{
+  timestamps:true
 });
 
 
