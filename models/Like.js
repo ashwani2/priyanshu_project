@@ -6,6 +6,10 @@ const LikeSchema = new mongoose.Schema({
         ref:'Catalogue',
         required:true
     },
+    likedBy:{
+        type:String,
+        required:true,
+    },
     user:{
         type:mongoose.Schema.ObjectId,
         ref:'User',
