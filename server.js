@@ -27,6 +27,7 @@ connectDB();
 const auth = require("./routes/auth");
 const catalogue = require("./routes/catalogue");
 const static=require("./routes/static")
+const comment=require("./routes/comment")
 
 
 const app = express();
@@ -80,7 +81,10 @@ app.use("/api/v1/catalogue",catalogue)
 
 app.use("/api/v1/static",static)
 
+app.use("/api/v1/comment",comment)
+
 app.use(errorHandler);
+
 const PORT = process.env.PORT || 5000;
 
 const server = app.listen(

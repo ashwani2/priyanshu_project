@@ -75,25 +75,6 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
 })
 
 
-//@desc     Get single video comments data
-//@route    POST /api/v1/catalogue/videoComments
-//@access   Public
-exports.getVideoComments = asyncHandler(async (req, res, next) => {
-  let { videoId } = req.query
-
-  const commentDetails = await Comment.find({ video: videoId }).lean()
-
-  if (commentDetails) {
-    return next(new ErrorResponse("No Available Comments", 400));
-  }
-
-  res.status(200).json({
-    success: true,
-    data: commentDetails
-  })
-
-})
-
 //@desc     Get single video likes data
 //@route    POST /api/v1/catalogue/videoLikes
 //@access   Public
