@@ -1,16 +1,25 @@
 const ErrorResponse = require("../utils/errorResponse");
 const asyncHandler = require("../middlewares/async");
 const Catalogue = require("../models/Catalogue");
-const Comment = require("../models/Comment")
-const Like = require("../models/Like")
+const Comment = require("../models/Comment");
+const Like = require("../models/Like");
 
 //@desc     Get all the videos
 //@route    POST /api/v1/catalogue/videos
 //@access   Public
 exports.getVideos = asyncHandler(async (req, res, next) => {
   const { filter } = req.body;
-  const { experts, countries, parameters, latest, trending } = filter;
-  let matchQuery = {}, sortQuery = {}, pipeline = [];
+  const { experts, countries, parameters, latest, trending, search } = filter;
+  let matchQuery = {},
+    sortQuery = {},
+    pipeline = [];
+
+  if (search) {
+    matchQuery.title = {
+      $regex: search,
+      $options: "i",
+    };
+  }
 
   if (experts || countries || parameters) {
     if (experts.length !== 0) {
@@ -29,27 +38,23 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
       };
     }
     pipeline.push({
-      $match: matchQuery
-    })
+      $match: matchQuery,
+    });
   }
 
   if (latest || trending) {
-
     if (latest) {
-      sortQuery.createdAt = -1
-    }
-
-    else if (trending) {
-      sortQuery.viewCount = -1
+      sortQuery.createdAt = -1;
+    } else if (trending) {
+      sortQuery.viewCount = -1;
     }
 
     pipeline.push({
-      $sort: sortQuery
-    })
-
+      $sort: sortQuery,
+    });
   }
 
-  let catalogues = await Catalogue.aggregate(pipeline)
+  let catalogues = await Catalogue.aggregate(pipeline);
 
   res.status(200).json({
     success: true,
@@ -58,30 +63,29 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
 });
 
 //@desc     Get single video and their data
-//@route    POST /api/v1/catalogue/video
+//@route    POST /api/v1/catalogue/video/:videoId
 //@access   Public
 exports.getVideo = asyncHandler(async (req, res, next) => {
-  const { videoId } = req.query
+  const { videoId } = req.params;
 
-  const videoDetails = await Catalogue.findOne({ _id: videoId }).lean()
+  const videoDetails = await Catalogue.findOne({ _id: videoId }).lean();
 
   if (!videoDetails) {
     return next(new ErrorResponse("Requested Video is not available", 400));
   }
   res.status(200).json({
     success: true,
-    data: videoDetails
-  })
-})
-
+    data: videoDetails,
+  });
+});
 
 //@desc     Get single video likes data
 //@route    POST /api/v1/catalogue/videoLikes
 //@access   Public
 exports.getVideoLikes = asyncHandler(async (req, res, next) => {
-  let { videoId } = req.query
+  let { videoId } = req.query;
 
-  const likeDetails = await Like.find({ video: videoId }).lean()
+  const likeDetails = await Like.find({ video: videoId }).lean();
 
   if (likeDetails) {
     return next(new ErrorResponse("No Likes", 400));
@@ -89,7 +93,31 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    data: likeDetails
-  })
+    data: likeDetails,
+  });
+});
 
-})
+//@desc     Get Related Videos of a single video
+//@route    POST /api/v1/catalogue/relatedVideos/:videoId
+//@access   Public
+exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
+  let { videoId } = req.params;
+
+  if (!videoId) {
+    return next(new ErrorResponse("please pass appropriate parameters", 400));
+  }
+
+  let videos = await Catalogue.find({ _id: { $nin: [videoId] } }).sort({
+    parameter: 1,
+    expert: 1,
+    country: 1,
+  });
+  if (!videos) {
+    return next(new ErrorResponse("Cannot find videos", 400));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: videos,
+  });
+});
