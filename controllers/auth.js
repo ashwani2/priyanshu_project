@@ -50,14 +50,14 @@ exports.login = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email }).select("+password");
 
   if (!user) {
-    return next(new ErrorResponse("Invalid Credentials", 401));
+    return next(new ErrorResponse("Invalid Credentials", 200));
   }
 
   // Check if passwords matches
   const isMatch = await user.matchPassword(password);
 
   if (!isMatch) {
-    return next(new ErrorResponse("Invalid Credentials", 401));
+    return next(new ErrorResponse("Invalid Credentials", 200));
   }
   const token = user.getSignedJwtToken();
   const options = {
@@ -101,7 +101,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
 
   if (!user) {
-    return next(new ErrorResponse("There is no user with that email", 404));
+    return next(new ErrorResponse("There is no user with that email", 200));
   }
 
   // Get reset token
@@ -173,7 +173,7 @@ exports.photoUpload = asyncHandler(async (req, res, next) => {
 
   if (!user) {
     return next(
-      new ErrorResponse(`USER not found with id of ${req.params.id}`, 404)
+      new ErrorResponse(`USER not found with id of ${req.params.id}`, 200)
     );
   }
 

@@ -18,7 +18,7 @@ exports.protect = asyncHandler(async (req, res, next) => {
 
   // Make Sure token exists
   if (!token) {
-    return next(new ErrorResponse("Not Authorized to access this Route", 401));
+    return next(new ErrorResponse("Not Authorized to access this Route", 200));
   }
 
   try {
@@ -29,6 +29,6 @@ exports.protect = asyncHandler(async (req, res, next) => {
     req.user = await User.findById(decoded.id);
     next();
   } catch (error) {
-    return next(new ErrorResponse("Not Authorized to access this Route", 401));
+    return next(new ErrorResponse("Not Authorized to access this Route", 200));
   }
 });
