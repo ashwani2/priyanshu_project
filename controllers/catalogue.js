@@ -121,3 +121,32 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
     data: videos,
   });
 });
+
+//@desc     Increment of viewCount
+//@route    POST /api/v1/catalogue/viewCount/:videoId
+//@access   Public
+exports.updateViewCount = asyncHandler(async (req, res, next) => {
+  let { videoId } = req.params;
+
+  if (!videoId) {
+    return next(new ErrorResponse("please pass appropriate parameters", 400));
+  }
+
+  let videoData = await Catalogue.findByIdAndUpdate(
+    { _id: videoId },
+    {
+      $set: {
+        $inc: { viewCount: 1 },
+      },
+    }
+  );
+
+  if (!videoData) {
+    return next(new ErrorResponse("Something went wrong", 400));
+  }
+
+  res.status(200).json({
+    success: true,
+    data: videoData,
+  });
+});
