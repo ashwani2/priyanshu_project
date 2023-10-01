@@ -21,7 +21,7 @@ exports.getVideoComments = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "successfull!!",
-    data: commentDetails,
+    response: commentDetails,
   });
 });
 
@@ -53,7 +53,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 201,
     message: "successfull!!",
-    data: comment,
+    response: comment,
   });
 });
 
@@ -88,7 +88,7 @@ exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "comment Updated",
-    data: [],
+    response: [],
   });
 });
 
@@ -120,6 +120,6 @@ exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "Reply updated!!",
-    data: [],
+    response: [],
   });
 });

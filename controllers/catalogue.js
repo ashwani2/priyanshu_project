@@ -60,7 +60,7 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "successfull!!",
-    data: catalogues,
+    response: catalogues,
   });
 });
 
@@ -79,7 +79,7 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "successfull!!",
-    data: videoDetails,
+    response: videoDetails,
   });
 });
 
@@ -99,7 +99,7 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "Done!",
-    data: likeDetails,
+    response: likeDetails,
   });
 });
 
@@ -126,7 +126,7 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "Done!",
-    data: videos,
+    response: videos,
   });
 });
 
@@ -157,6 +157,6 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
     error: false,
     statusCode: 200,
     message: "View Count Updated",
-    data: videoData,
+    response: videoData,
   });
 });
