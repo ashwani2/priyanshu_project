@@ -17,7 +17,8 @@ exports.getStaticValues = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"successfull!!",
+    statusCode: 200,
+    message: "successfull!!",
     data: staticData,
   });
 });

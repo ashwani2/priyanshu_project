@@ -8,7 +8,7 @@ const Comment = require("../models/Comment");
 exports.getVideoComments = asyncHandler(async (req, res, next) => {
   let { videoId } = req.query;
 
-  if(!videoId){
+  if (!videoId) {
     return next(new ErrorResponse("Please pass the parameters", 400));
   }
   const commentDetails = await Comment.findOne({ videoId }).lean();
@@ -19,7 +19,8 @@ exports.getVideoComments = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"successfull!!",
+    statusCode: 200,
+    message: "successfull!!",
     data: commentDetails,
   });
 });
@@ -30,7 +31,7 @@ exports.getVideoComments = asyncHandler(async (req, res, next) => {
 exports.addComment = asyncHandler(async (req, res, next) => {
   let { videoId, text } = req.body;
 
-  if(!videoId || !text){
+  if (!videoId || !text) {
     return next(new ErrorResponse("Please pass parameters", 400));
   }
 
@@ -50,7 +51,8 @@ exports.addComment = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({
     error: false,
-    message:"successfull!!",
+    statusCode: 201,
+    message: "successfull!!",
     data: comment,
   });
 });
@@ -61,7 +63,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
 exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
   let { commentId } = req.query;
 
-  if(!commentId){
+  if (!commentId) {
     return next(new ErrorResponse("Please Pass the parameters", 400));
   }
 
@@ -84,7 +86,8 @@ exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"comment Updated",
+    statusCode: 200,
+    message: "comment Updated",
     data: [],
   });
 });
@@ -95,7 +98,7 @@ exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
 exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
   let { commentId, text } = req.body;
 
-  if(!commentId || !text){
+  if (!commentId || !text) {
     return next(new ErrorResponse("Please Pass The Parameters", 400));
   }
 
@@ -115,7 +118,8 @@ exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"Reply updated!!",
+    statusCode: 200,
+    message: "Reply updated!!",
     data: [],
   });
 });

@@ -10,22 +10,23 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose Bad Object ID
   if (err.name === "CastError") {
     const message = `Resource not Found with the id ${err.value}`;
-    error = new ErrorResponse(message, 404);
+    error = new ErrorResponse(message, 200);
   }
 
   // Mongoose Duplicate key
   if (err.code === 11000 || err.name === "MongoError") {
     const message = `Duplicate field Value entered`;
-    error = new ErrorResponse(message, 400);
+    error = new ErrorResponse(message, 200);
   }
 
   // Mongoose validation error
   if (err.name === "ValidationError") {
     const message = Object.values(err.errors).map((val) => val.message);
-    error = new ErrorResponse(message, 400);
+    error = new ErrorResponse(message, 200);
   }
   res.status(error.statusCode || 500).json({
-    error: false,
+    error: true,
+    statusCode: 400,
     message: error.message || "Server error",
   });
 };

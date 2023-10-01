@@ -58,7 +58,8 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"successfull!!",
+    statusCode: 200,
+    message: "successfull!!",
     data: catalogues,
   });
 });
@@ -76,7 +77,8 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
   }
   res.status(200).json({
     error: false,
-    message:"successfull!!",
+    statusCode: 200,
+    message: "successfull!!",
     data: videoDetails,
   });
 });
@@ -95,7 +97,8 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"Done!",
+    statusCode: 200,
+    message: "Done!",
     data: likeDetails,
   });
 });
@@ -121,7 +124,8 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"Done!",
+    statusCode: 200,
+    message: "Done!",
     data: videos,
   });
 });
@@ -151,7 +155,8 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({
     error: false,
-    message:"View Count Updated",
+    statusCode: 200,
+    message: "View Count Updated",
     data: videoData,
   });
 });

@@ -22,13 +22,16 @@ exports.register = asyncHandler(async (req, res, next) => {
   // Create token
   const token = user.getSignedJwtToken();
 
+  delete user.password;
+
   res.status(200).json({
     error: false,
+    statusCode: 200,
     message: "Account created Successfully!!",
-    response:{
+    response: {
       token,
-      user
-    }
+      user,
+    },
   });
 });
 
@@ -67,15 +70,15 @@ exports.login = asyncHandler(async (req, res, next) => {
     options.secure = true;
   }
 
-  res.status(statusCode).cookie("token", token, options).json({
+  res.status(200).cookie("token", token, options).json({
     error: false,
+    statusCode: 200,
     message: "Successfull",
-    response:{
+    response: {
       token,
-      user
-    }
+      user,
+    },
   });
- 
 });
 
 //@desc     Get Current Logged In User
@@ -84,7 +87,9 @@ exports.login = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id);
   res.status(200).json({
-    success: true,
+    error: false,
+    statusCode: 200,
+    message: "USER!!",
     data: user,
   });
 });
@@ -118,7 +123,9 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       message,
     });
 
-    res.status(200).json({ error: false, message: "Email sent" });
+    res
+      .status(200)
+      .json({ error: false, statusCode: 200, message: "Email sent" });
   } catch (err) {
     console.log(err);
     user.resetPasswordToken = undefined;
@@ -226,6 +233,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res.status(statusCode).cookie("token", token, options).json({
     error: false,
+    statusCode: statusCode,
     message: "Successfull",
     token: token,
   });
