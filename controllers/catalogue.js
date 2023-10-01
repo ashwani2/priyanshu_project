@@ -184,7 +184,6 @@ exports.updateLikeCount = asyncHandler(async (req, res, next) => {
   if (!videoData) {
     return next(new ErrorResponse("Something went wrong", 200));
   }
- 
 
   res.status(200).json({
     error: false,
@@ -194,4 +193,24 @@ exports.updateLikeCount = asyncHandler(async (req, res, next) => {
   });
 });
 
+//@desc     Upload a Video
+//@route    POST /api/v1/catalogue/video
+//@access   Private
+exports.uploadVideo = asyncHandler(async (req, res, next) => {
+  try {
+    const params = {
+      Bucket: "",
+      Key: `${Date.now()}-${req.file.originalname}`,
+      Body: req.file.buffer,
+    };
 
+    const data = await s3.upload(params).promise();
+
+    // Successfully uploaded to S3
+    console.log("File uploaded to S3:", data.Location);
+    res.json({ message: "File uploaded to S3", url: data.Location });
+  } catch (error) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to upload to S3" });
+  }
+});
