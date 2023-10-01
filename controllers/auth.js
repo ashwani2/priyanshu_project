@@ -25,7 +25,10 @@ exports.register = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     error: false,
     message: "Account created Successfully!!",
-    token,
+    response:{
+      token,
+      user
+    }
   });
 });
 
@@ -53,8 +56,26 @@ exports.login = asyncHandler(async (req, res, next) => {
   if (!isMatch) {
     return next(new ErrorResponse("Invalid Credentials", 401));
   }
+  const token = user.getSignedJwtToken();
+  const options = {
+    expires: new Date(
+      Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+    ),
+    httpOnly: true,
+  };
+  if (process.env.NODE_ENV === "production") {
+    options.secure = true;
+  }
 
-  sendTokenResponse(user, 200, res);
+  res.status(statusCode).cookie("token", token, options).json({
+    error: false,
+    message: "Successfull",
+    response:{
+      token,
+      user
+    }
+  });
+ 
 });
 
 //@desc     Get Current Logged In User
