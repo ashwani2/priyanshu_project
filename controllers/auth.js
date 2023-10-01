@@ -43,7 +43,7 @@ exports.login = asyncHandler(async (req, res, next) => {
 
   // Validate Email and Password
   if (!email || !password) {
-    return next(new ErrorResponse("Please Provide a email and password", 400));
+    return next(new ErrorResponse("Please Provide a email and password", 200));
   }
 
   // Check for User
@@ -153,7 +153,7 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   });
 
   if (!user) {
-    return next(new ErrorResponse("Invalid token", 400));
+    return next(new ErrorResponse("Invalid token", 200));
   }
 
   // Set new password
@@ -178,14 +178,14 @@ exports.photoUpload = asyncHandler(async (req, res, next) => {
   }
 
   if (!req.files) {
-    return next(new ErrorResponse(`Please Upload A file`, 400));
+    return next(new ErrorResponse(`Please Upload A file`, 200));
   }
 
   const file = req.files.file;
 
   // Make Sure the Image is Photo
   if (!file.mimetype.startsWith("image")) {
-    return next(new ErrorResponse(`Please Upload a image file`, 400));
+    return next(new ErrorResponse(`Please Upload a image file`, 200));
   }
 
   // check filesize
@@ -193,7 +193,7 @@ exports.photoUpload = asyncHandler(async (req, res, next) => {
     return next(
       new ErrorResponse(
         `Please Upload a Image less than ${process.env.MAX_FILE_UPLOADS}`,
-        400
+        200
       )
     );
   }

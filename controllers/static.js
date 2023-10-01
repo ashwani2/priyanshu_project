@@ -12,7 +12,7 @@ exports.getStaticValues = asyncHandler(async (req, res, next) => {
   const staticData = await StaticData.find({ type: type }).lean();
 
   if (!staticData) {
-    return next(new ErrorResponse("No data Found", 400));
+    return next(new ErrorResponse("No data Found", 200));
   }
 
   res.status(200).json({

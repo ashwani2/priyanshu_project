@@ -9,12 +9,12 @@ exports.getVideoComments = asyncHandler(async (req, res, next) => {
   let { videoId } = req.query;
 
   if (!videoId) {
-    return next(new ErrorResponse("Please pass the parameters", 400));
+    return next(new ErrorResponse("Please pass the parameters", 200));
   }
   const commentDetails = await Comment.findOne({ videoId }).lean();
 
   if (!commentDetails) {
-    return next(new ErrorResponse("No Available Comments", 400));
+    return next(new ErrorResponse("No Available Comments", 200));
   }
 
   res.status(200).json({
@@ -32,7 +32,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   let { videoId, text } = req.body;
 
   if (!videoId || !text) {
-    return next(new ErrorResponse("Please pass parameters", 400));
+    return next(new ErrorResponse("Please pass parameters", 200));
   }
 
   let userId = req.user._id;
@@ -46,7 +46,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   });
 
   if (!comment) {
-    return next(new ErrorResponse("can't Add Comment", 400));
+    return next(new ErrorResponse("can't Add Comment", 200));
   }
 
   res.status(201).json({
@@ -64,14 +64,14 @@ exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
   let { commentId } = req.query;
 
   if (!commentId) {
-    return next(new ErrorResponse("Please Pass the parameters", 400));
+    return next(new ErrorResponse("Please Pass the parameters", 200));
   }
 
   let userId = req.user._id;
   let comment = await Comment.findById({ _id: commentId });
 
   if (!comment) {
-    return next(new ErrorResponse("Cannot find that comment", 400));
+    return next(new ErrorResponse("Cannot find that comment", 200));
   }
 
   const alreadyLiked = comment.likes.some((like) => like.equals(userId));
@@ -99,7 +99,7 @@ exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
   let { commentId, text } = req.body;
 
   if (!commentId || !text) {
-    return next(new ErrorResponse("Please Pass The Parameters", 400));
+    return next(new ErrorResponse("Please Pass The Parameters", 200));
   }
 
   let userId = req.user._id;
@@ -107,7 +107,7 @@ exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
   let comment = await Comment.findById({ _id: commentId });
 
   if (!comment) {
-    return next(new ErrorResponse("Cannot find that comment", 400));
+    return next(new ErrorResponse("Cannot find that comment", 200));
   }
 
   let commentObj = { userId, text, commentBy };

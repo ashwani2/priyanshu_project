@@ -73,7 +73,7 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
   const videoDetails = await Catalogue.findOne({ _id: videoId }).lean();
 
   if (!videoDetails) {
-    return next(new ErrorResponse("Requested Video is not available", 400));
+    return next(new ErrorResponse("Requested Video is not available", 200));
   }
   res.status(200).json({
     error: false,
@@ -92,7 +92,7 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
   const likeDetails = await Like.find({ video: videoId }).lean();
 
   if (likeDetails) {
-    return next(new ErrorResponse("No Likes", 400));
+    return next(new ErrorResponse("No Likes", 200));
   }
 
   res.status(200).json({
@@ -110,7 +110,7 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
   let { videoId } = req.params;
 
   if (!videoId) {
-    return next(new ErrorResponse("please pass appropriate parameters", 400));
+    return next(new ErrorResponse("please pass appropriate parameters", 200));
   }
 
   let videos = await Catalogue.find({ _id: { $nin: [videoId] } }).sort({
@@ -119,7 +119,7 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
     country: 1,
   });
   if (!videos) {
-    return next(new ErrorResponse("Cannot find videos", 400));
+    return next(new ErrorResponse("Cannot find videos", 200));
   }
 
   res.status(200).json({
@@ -137,7 +137,7 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
   let { videoId } = req.params;
 
   if (!videoId) {
-    return next(new ErrorResponse("please pass appropriate parameters", 400));
+    return next(new ErrorResponse("please pass appropriate parameters", 200));
   }
 
   let videoData = await Catalogue.findByIdAndUpdate(
@@ -150,7 +150,7 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
   );
 
   if (!videoData) {
-    return next(new ErrorResponse("Something went wrong", 400));
+    return next(new ErrorResponse("Something went wrong", 200));
   }
 
   res.status(200).json({
