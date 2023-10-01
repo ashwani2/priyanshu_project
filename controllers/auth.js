@@ -23,7 +23,8 @@ exports.register = asyncHandler(async (req, res, next) => {
   const token = user.getSignedJwtToken();
 
   res.status(200).json({
-    sucess: true,
+    error: false,
+    message: "Account created Successfully!!",
     token,
   });
 });
@@ -96,7 +97,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
       message,
     });
 
-    res.status(200).json({ success: true, data: "Email sent" });
+    res.status(200).json({ error: false, message: "Email sent" });
   } catch (err) {
     console.log(err);
     user.resetPasswordToken = undefined;
@@ -181,7 +182,8 @@ exports.photoUpload = asyncHandler(async (req, res, next) => {
     await user.findByIdAndUpdate(req.params.id, { photo: file.name });
 
     res.status(200).json({
-      sucess: true,
+      error: false,
+      message: "File uploaded!!",
       data: file.name,
     });
   });
@@ -202,7 +204,8 @@ const sendTokenResponse = (user, statusCode, res) => {
   }
 
   res.status(statusCode).cookie("token", token, options).json({
-    success: true,
+    error: false,
+    message: "Successfull",
     token: token,
   });
 };

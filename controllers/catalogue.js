@@ -57,7 +57,8 @@ exports.getVideos = asyncHandler(async (req, res, next) => {
   let catalogues = await Catalogue.aggregate(pipeline);
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"successfull!!",
     data: catalogues,
   });
 });
@@ -74,7 +75,8 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("Requested Video is not available", 400));
   }
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"successfull!!",
     data: videoDetails,
   });
 });
@@ -92,7 +94,8 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"Done!",
     data: likeDetails,
   });
 });
@@ -117,7 +120,8 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"Done!",
     data: videos,
   });
 });
@@ -146,7 +150,8 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"View Count Updated",
     data: videoData,
   });
 });

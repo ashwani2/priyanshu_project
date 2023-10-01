@@ -18,7 +18,8 @@ exports.getVideoComments = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"successfull!!",
     data: commentDetails,
   });
 });
@@ -48,7 +49,8 @@ exports.addComment = asyncHandler(async (req, res, next) => {
   }
 
   res.status(201).json({
-    success: true,
+    error: false,
+    message:"successfull!!",
     data: comment,
   });
 });
@@ -81,7 +83,8 @@ exports.updateCommentLikes = asyncHandler(async (req, res, next) => {
   await comment.save();
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"comment Updated",
     data: [],
   });
 });
@@ -111,7 +114,8 @@ exports.updateCommentReplies = asyncHandler(async (req, res, next) => {
   await comment.save();
 
   res.status(200).json({
-    success: true,
+    error: false,
+    message:"Reply updated!!",
     data: [],
   });
 });
