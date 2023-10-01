@@ -84,7 +84,7 @@ exports.getVideo = asyncHandler(async (req, res, next) => {
 });
 
 //@desc     Get single video likes data
-//@route    POST /api/v1/catalogue/videoLikes
+//@route    GET /api/v1/catalogue/videoLikes
 //@access   Public
 exports.getVideoLikes = asyncHandler(async (req, res, next) => {
   let { videoId } = req.query;
@@ -104,7 +104,7 @@ exports.getVideoLikes = asyncHandler(async (req, res, next) => {
 });
 
 //@desc     Get Related Videos of a single video
-//@route    POST /api/v1/catalogue/relatedVideos/:videoId
+//@route    GET /api/v1/catalogue/relatedVideos/:videoId
 //@access   Public
 exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
   let { videoId } = req.params;
@@ -131,7 +131,7 @@ exports.getRelatedVideos = asyncHandler(async (req, res, next) => {
 });
 
 //@desc     Increment of viewCount
-//@route    POST /api/v1/catalogue/viewCount/:videoId
+//@route    GET /api/v1/catalogue/viewCount/:videoId
 //@access   Public
 exports.updateViewCount = asyncHandler(async (req, res, next) => {
   let { videoId } = req.params;
@@ -160,3 +160,38 @@ exports.updateViewCount = asyncHandler(async (req, res, next) => {
     response: videoData,
   });
 });
+
+//@desc     updation of likes
+//@route    GET /api/v1/catalogue/likeCount/:videoId
+//@access   Private
+exports.updateLikeCount = asyncHandler(async (req, res, next) => {
+  let { videoId } = req.params;
+
+  if (!videoId) {
+    return next(new ErrorResponse("please pass appropriate parameters", 200));
+  }
+
+  let userId = req.user._id;
+  let videoData = await Catalogue.findByIdAndUpdate(
+    { _id: videoId },
+    {
+      $set: {
+        $inc: { likeCount: 1 },
+      },
+    }
+  );
+
+  if (!videoData) {
+    return next(new ErrorResponse("Something went wrong", 200));
+  }
+ 
+
+  res.status(200).json({
+    error: false,
+    statusCode: 200,
+    message: "Like Count Updated",
+    response: videoData,
+  });
+});
+
+

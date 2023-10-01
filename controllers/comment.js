@@ -49,7 +49,7 @@ exports.addComment = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse("can't Add Comment", 200));
   }
 
-  res.status(201).json({
+  res.status(200).json({
     error: false,
     statusCode: 201,
     message: "successfull!!",
